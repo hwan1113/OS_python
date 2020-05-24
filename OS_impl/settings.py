@@ -31,6 +31,7 @@ ALLOWED_HOSTS = [".goorm.io"]
 # Application definition
 
 INSTALLED_APPS = [
+    'process.apps.ProcessConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

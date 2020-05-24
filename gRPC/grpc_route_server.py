@@ -7,8 +7,7 @@ import grpc
 
 import grpcRoute_pb2
 import grpcRoute_pb2_grpc
-
-# import route_guide_resources
+import json
 
 
 def get_feature(feature_db, point):
@@ -45,7 +44,16 @@ class grpcRouteServicer(grpcRoute_pb2_grpc.grpcRouteServicer):
     """Provides methods that implement functionality of route guide server."""
 
     def __init__(self):
-        self.db = 1
+        feature_list = []
+        with open("gRPC/route_guide_db.json") as route_guide_db_file:
+            for item in json.load(route_guide_db_file):
+                feature = grpcRoute_pb2.Feature(
+                    name=item["name"],
+                    location=grpcRoute_pb2.Point(
+                        latitude=item["location"]["latitude"],
+                        longitude=item["location"]["longitude"]))
+                feature_list.append(feature)
+        self.db = feature_list
 
     def GetFeature(self, request, context):
         feature = get_feature(self.db, request)
